@@ -285,6 +285,8 @@ pub extern "C" fn main() {
     params.data = Some(ewasm_api::calldata_acquire());
 
     let mut ext = EwasmExt::default();
+    // FIXME: should create a proper implementation for default() on EwasmExt which does this
+    ext.schedule = Schedule::new_byzantium();
     let result = instance.exec(params, &mut ext);
     // Could run `result.finalize(ext)` here, but processing manually seemed simpler.
     match result {
