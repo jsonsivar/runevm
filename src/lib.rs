@@ -267,6 +267,10 @@ impl vm::Ext for EwasmExt {
 
 #[no_mangle]
 pub extern "C" fn main() {
+    // NOTE: There is no tx_gas_limit in the EEI. As a workaround query "gasLeft"
+    //       as soon as possible.
+    let startgas = ewasm_api::gas_left();
+
     // It is fine using U256::zero() here because the main point of the
     // factory is to determine if gas is 64bit or not. In ewasm it is always 64bit.
     let mut instance = Factory::default().create(&U256::zero());
@@ -280,8 +284,7 @@ pub extern "C" fn main() {
     params.sender = Address::from(ewasm_api::caller());
     params.origin = Address::from(ewasm_api::tx_origin());
     params.gas_price = U256::from(U128::from(ewasm_api::tx_gas_price()));
-    // NOTE: there is no tx_gas_limit in the EEI
-    params.gas = U256::from(ewasm_api::gas_left());
+    params.gas = U256::from(startgas);
     params.data = Some(ewasm_api::calldata_acquire());
 
     let mut ext = EwasmExt::default();
