@@ -7,6 +7,12 @@ repository = "https://github.com/axic/runevm"
 description = "EVM interpreter compatible with the evm2wasm interface"
 publish = false
 
+#[patch.'https://github.com/paritytech/parity-common']
+#parity-bytes = { git = "https://github.com/paritytech/parity-common", rev = "0045887f" }
+
+#[replace]
+#"parity-bytes:0.1.0" = { git = "https://github.com/paritytech/parity-common", rev = "0045887f" }
+
 [dependencies]
 ewasm_api = { git = "https://github.com/ewasm/ewasm-rust-api", tag = "0.4.0" }
 #ewasm_api = { path = "../ewasm-rust-api" }
